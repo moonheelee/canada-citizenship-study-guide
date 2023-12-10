@@ -7,7 +7,6 @@ load_dotenv()
 
 client = OpenAI(api_key=os.getenv('OPENAI_API'))
 
-
 registered_assistants = client.beta.assistants.list(
     order="desc",
 )
