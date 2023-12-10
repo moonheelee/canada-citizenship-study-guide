@@ -4,32 +4,35 @@ import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
 
+st.header("Canada Citizenship Study Guide")
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API"))
-assistant_id = os.getenv("ASSISTANT_ID")
 
-study_assistant = client.beta.assistants.retrieve(assistant_id)
-print(study_assistant)
+if 'assistant_id' not in st.session_state:
+    assistant = client.beta.assistants.retrieve(os.getenv("ASSISTANT_ID"))
+    print(f"Retrieve assistant: {assistant.id}")
+    st.session_state.assistant_id = assistant.id
 
 if 'thread_id' not in st.session_state:
     thread = client.beta.threads.create()
+    print(f"Create a new thread: {thread.id}")
     st.session_state.thread_id = thread.id
 
+assistant_id = st.session_state.assistant_id
 thread_id = st.session_state.thread_id
 
 thread_messages = client.beta.threads.messages.list(thread_id, order="asc")
-
-st.header(study_assistant.name)
 
 for message in thread_messages.data:
     with st.chat_message(message.role):
         st.write(message.content[0].text.value)
 
-
 prompt = st.chat_input("Let's get started!")
 if prompt:
+    print(prompt)
+
     message = client.beta.threads.messages.create(
         thread_id=thread_id,
         role="user",
@@ -56,8 +59,3 @@ if prompt:
     messages = client.beta.threads.messages.list(thread_id)
     with st.chat_message(messages.data[0].role):
         st.write(messages.data[0].content[0].text.value)
-
-
-
-
-
