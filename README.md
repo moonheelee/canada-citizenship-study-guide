@@ -62,6 +62,10 @@ The application is a Streamlit app, so it will start a web server and open your 
 - [OpenAI](https://www.openai.com/)
 - [Streamlit](https://streamlit.io/)
 
+## Slide for Demo
+
+- [Something Fun with Assistants API](https://docs.google.com/presentation/d/160Q8debqkARUrvIw6t91uaxFV1gdDgjw-c-sl3A91X8/edit?usp=sharing)
+
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE.md` file for details.
