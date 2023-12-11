@@ -27,12 +27,11 @@ thread_messages = client.beta.threads.messages.list(thread_id, order="asc")
 
 for message in thread_messages.data:
     with st.chat_message(message.role):
-        st.write(message.content[0].text.value)
+        for line in message.content[0].text.value.splitlines():
+            st.write(line)
 
 prompt = st.chat_input("Let's get started!")
 if prompt:
-    print(prompt)
-
     message = client.beta.threads.messages.create(
         thread_id=thread_id,
         role="user",
@@ -40,7 +39,8 @@ if prompt:
     )
 
     with st.chat_message(message.role):
-        st.write(message.content[0].text.value)
+        for line in message.content[0].text.value.splitlines():
+            st.write(line)
 
     run = client.beta.threads.runs.create(
         thread_id=thread_id,
@@ -58,4 +58,5 @@ if prompt:
 
     messages = client.beta.threads.messages.list(thread_id)
     with st.chat_message(messages.data[0].role):
-        st.write(messages.data[0].content[0].text.value)
+        for line in messages.data[0].content[0].text.value.splitlines():
+            st.write(line)
