@@ -4,6 +4,17 @@ import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
 
+
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API"))
+
+conversation_starters = [
+    "Can you start a quiz on Canadian history for me?",
+    "Can we do a quiz about Canada's government?",
+    "I'd like to take a quiz on Canadian culture, please.",
+    "Could you give me a geography quiz on Canada?"
+]
+
 # Function to display each line of the message
 def write_message_content(message):
     with st.chat_message(message.role):
@@ -12,9 +23,6 @@ def write_message_content(message):
 
 def main():
     st.title("Canada Citizenship Study Guide")
-
-    load_dotenv()
-    client = OpenAI(api_key=os.getenv("OPENAI_API"))
 
     # Initialize the assistant, thread, and message lists
     if 'assistant_id' not in st.session_state:
@@ -28,6 +36,8 @@ def main():
 
     assistant_id = st.session_state.assistant_id
     thread_id = st.session_state.thread_id
+
+    # Caching the thread messages to avoid unnecessary API calls
     thread_messages = st.session_state.thread_messages
 
     # Display all messages in the thread
@@ -42,6 +52,7 @@ def main():
             content=prompt
         )
 
+        # Add the user's message to the cached thread messages and display it
         thread_messages.append(message)
         write_message_content(message)
 
@@ -58,7 +69,7 @@ def main():
                     run_id=run.id
                 )
 
-        # Display the assistant's response
+        # Add the assistant's response to the cached thread messages and display it
         messages = client.beta.threads.messages.list(thread_id, after=message.id, order="asc")
         thread_messages.append(messages.data[0])
         write_message_content(messages.data[0])
