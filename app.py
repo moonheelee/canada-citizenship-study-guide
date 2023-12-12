@@ -69,10 +69,11 @@ def main():
                     run_id=run.id
                 )
 
-        # Add the assistant's response to the cached thread messages and display it
+        # Add the assistant's messages to the cached thread messages and display them
         messages = client.beta.threads.messages.list(thread_id, after=message.id, order="asc")
-        thread_messages.append(messages.data[0])
-        write_message_content(messages.data[0])
+        for message in messages.data:
+            thread_messages.append(message)
+            write_message_content(message)
 
 
 if __name__ == "__main__":
