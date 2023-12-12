@@ -11,28 +11,29 @@ def write_message_content(message):
             st.write(line)
 
 def main():
-    st.header("Canada Citizenship Study Guide")
+    st.title("Canada Citizenship Study Guide")
 
     load_dotenv()
     client = OpenAI(api_key=os.getenv("OPENAI_API"))
 
-    # Retrieve or create assistant and thread IDs
+    # Initialize the assistant, thread, and message lists
     if 'assistant_id' not in st.session_state:
         assistant = client.beta.assistants.retrieve(os.getenv("ASSISTANT_ID"))
         st.session_state.assistant_id = assistant.id
     if 'thread_id' not in st.session_state:
         thread = client.beta.threads.create()
         st.session_state.thread_id = thread.id
+    if 'thread_messages' not in st.session_state:
+        st.session_state.thread_messages = []
 
     assistant_id = st.session_state.assistant_id
     thread_id = st.session_state.thread_id
+    thread_messages = st.session_state.thread_messages
 
     # Display all messages in the thread
-    thread_messages = client.beta.threads.messages.list(thread_id, order="asc")
-    for message in thread_messages.data:
+    for message in thread_messages:
         write_message_content(message)
 
-    # Process user input and display it
     prompt = st.chat_input("Let's get started!")
     if prompt:
         message = client.beta.threads.messages.create(
@@ -40,6 +41,8 @@ def main():
             role="user",
             content=prompt
         )
+
+        thread_messages.append(message)
         write_message_content(message)
 
         # Start the assistant's processing and wait for completion
@@ -56,8 +59,10 @@ def main():
                 )
 
         # Display the assistant's response
-        messages = client.beta.threads.messages.list(thread_id)
+        messages = client.beta.threads.messages.list(thread_id, after=message.id, order="asc")
+        thread_messages.append(messages.data[0])
         write_message_content(messages.data[0])
+
 
 if __name__ == "__main__":
     main()
