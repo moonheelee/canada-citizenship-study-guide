@@ -21,8 +21,28 @@ def write_message_content(message):
         for line in message.content[0].text.value.splitlines():
             st.write(line)
 
+# Function to handle the button click event
+def on_starter_click(starter):
+    # Hide the conversation starter buttons and save the selected starter
+    st.session_state.hide_conversation_starter_buttons = True
+    st.session_state.conversation_starter = starter
+
+# Function to display the conversation starter buttons
+def display_conversation_starter_buttons():
+    # Default the conversation starter buttons to visible
+    if 'hide_conversation_starter_buttons' not in st.session_state:
+        st.session_state.hide_conversation_starter_buttons = False
+
+    # Display the conversation starter buttons if they are visible
+    if st.session_state.hide_conversation_starter_buttons is False:
+        for starter in conversation_starters:
+            st.button(starter, on_click=on_starter_click, args=[starter])
+
+
 def main():
     st.title("Canada Citizenship Study Guide")
+
+    display_conversation_starter_buttons()
 
     # Initialize the assistant, thread, and message lists
     if 'assistant_id' not in st.session_state:
@@ -32,20 +52,27 @@ def main():
         thread = client.beta.threads.create()
         st.session_state.thread_id = thread.id
     if 'thread_messages' not in st.session_state:
+        # Caching the thread messages to avoid unnecessary API calls
         st.session_state.thread_messages = []
 
     assistant_id = st.session_state.assistant_id
     thread_id = st.session_state.thread_id
-
-    # Caching the thread messages to avoid unnecessary API calls
     thread_messages = st.session_state.thread_messages
 
     # Display all messages in the thread
     for message in thread_messages:
         write_message_content(message)
 
-    prompt = st.chat_input("Let's get started!")
+    # Set prompt from the conversation starter or user input
+    conversation_starter = st.session_state.get('conversation_starter', None)
+    user_input = st.chat_input("Let's get started!")
+    prompt = user_input or conversation_starter
+
+    # Handle the user's input and process it with the assistant
     if prompt:
+        if conversation_starter:
+            st.session_state.conversation_starter = None
+
         message = client.beta.threads.messages.create(
             thread_id=thread_id,
             role="user",
