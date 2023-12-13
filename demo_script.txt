@@ -1,14 +1,11 @@
-Good evening, everyone at the Vancouver AI Community Meetup! I'm delighted to share my project, the Canada Citizenship Study Guide. This project highlights the integration of OpenAI's Assistants API and Streamlit to transform the educational experience.
+"Good evening, everyone! Imagine having a study guide that's made just for you. With all the AI tools available, why not create something unique? I'm Moonhee, thrilled to be here tonight. I'm going to show you a cool, practical way to use OpenAI's latest Assistants API through my project, the Canada Citizenship Study Guide."
 
-Before we dive in, let's gauge our collective experience. Could you please raise your hand if you're familiar with OpenAI's Assistants API? Thank you. And who here has used Streamlit for web application development? Great to see that!
+"Our project is like magic – just upload your material, and the Assistants API takes care of the rest. It's really that simple. Once your content is up, the API does all the work, so you can relax."
 
-I'd like to focus on the Assistants API's capability for stateful interactions. Unlike basic APIs, this allows our application to maintain conversation context over multiple exchanges, crucial for a coherent learning experience. The study guide's content, uploaded as a document, is directly accessible by the API, enabling it to reference specific information in response to user queries.
+"Sure, there's some coding involved, but it's straightforward. You decide what you want the guide to do, and the API handles the complex stuff. This way, we focus on our goals, and let the API do the heavy lifting."
 
-Compared to LangChain, which is tailored for complex AI conversations, the Assistants API offers a straightforward yet robust method for interacting with OpenAI's language models, making it ideal for educational tools like ours where direct and efficient user interaction is key. For detailed insights into the API, you can visit the OpenAI Assistants API Overview.
+"Now, let's switch gears and see this in action with a live demo."
 
+"You're also welcome to check out my GitHub repository. You'll find the source code there, along with detailed instructions for the Assistant and all the materials you need."
 
-Let's move to the live demonstration. You'll see how the AI provides context-aware responses and how Streamlit's user-friendly interface enhances the overall experience. Your feedback, especially from a developer's perspective, is invaluable for the project's growth.
-
-Feel free to follow along and check out the GitHub repository at moonheelee/canada-citizenship-study-guide for more details. Your feedback, especially from a developer's perspective, is invaluable.
-
-Thank you, and I look forward to your questions and insights.
+"Thanks a lot for your time tonight. I can't wait to hear your questions and get insights from all of your unique experiences."
